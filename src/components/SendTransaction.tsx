@@ -1,5 +1,12 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Keypair, SystemProgram, Transaction, TransactionSignature } from "@solana/web3.js";
+import {
+  Keypair,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+  TransactionSignature,
+} from "@solana/web3.js";
 import { FC, useCallback } from "react";
 import { notify } from "../utils/notifications";
 
@@ -14,13 +21,17 @@ export const SendTransaction: FC = () => {
       return;
     }
 
+    let base58publicKey = new PublicKey("5xot9PVkphiX2adznghwrAuxGs2zeWisNSxMW6hU6Hkj");
+    console.log(base58publicKey.toBase58());
+
     let signature: TransactionSignature = "";
     try {
       const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
-          toPubkey: Keypair.generate().publicKey,
-          lamports: 1,
+          // toPubkey: Keypair.generate().publicKey,
+          toPubkey: base58publicKey,
+          lamports: 0.2 * LAMPORTS_PER_SOL,
         })
       );
 
